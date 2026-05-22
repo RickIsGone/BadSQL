@@ -3,9 +3,7 @@
 #include <vector>
 #include <expected>
 #include <string>
-#include <filesystem>
 #include "token.h"
-namespace fs = std::filesystem;
 
 namespace BadSQL {
     class Lexer {
@@ -16,12 +14,10 @@ namespace BadSQL {
         Lexer& operator=(const Lexer&) = delete;
         Lexer(Lexer&&) = delete;
 
-        std::expected<std::vector<Token>, std::string> tokenize(const fs::path& path);
+        std::expected<std::vector<Token>, std::string> tokenize(std::string_view query);
 
     private:
-        std::string _raw{};
         size_t _index{};
-
     };
 } // namespace BadSQL
 

@@ -1,26 +1,20 @@
 #include <expected>
 #include <vector>
 #include <string>
-#include <fstream>
-#include <filesystem>
-#include <sstream>
+#include <string_view>
 #include "lexer.h"
+
+#include <iostream>
+#include <ostream>
+
 #include "token.h"
-namespace fs = std::filesystem;
 
 namespace BadSQL {
-    std::expected<std::vector<Token>, std::string> Lexer::tokenize(const fs::path& path) {
-        std::ifstream inFile(path);
-        if (!inFile)
-            return std::unexpected("failed to open file: " + path.string());
-
-        std::stringstream ss;
-        ss << inFile.rdbuf();
-        _raw = ss.str();
-
-        inFile.close();
+    std::expected<std::vector<Token>, std::string> Lexer::tokenize(std::string_view query) {
         std::vector<Token> tokens;
-
+        for (char c : query) {
+            std::cout << c;
+        }
         return std::move(tokens);
     }
 } // namespace BadSQL
