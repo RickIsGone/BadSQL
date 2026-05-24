@@ -14,12 +14,11 @@ namespace BadSQL{
             std::string query(buffer.data(), bytes);
             std::string result = "OK\n";
 
-            Lexer lexer;
-            auto res = lexer.tokenize(query);
-            if (!res) {
-                Logger::error(res.error());
-                exit(EXIT_FAILURE);
-            }
+            Lexer lexer{query};
+            auto res = lexer.tokenize();
+            if (!res)
+                throw std::runtime_error{res.error()};
+
             auto tokens = std::move(res.value());
 
             boost::asio::write(socket, boost::asio::buffer(result));

@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 #include <string_view>
-#include <expected>
+#include <optional>
 
 namespace BadSQL {
     enum class TokenType {
@@ -76,10 +76,10 @@ namespace BadSQL {
         {"char", TokenType::Char}
     };
 
-    inline std::expected<TokenType, bool> tryMatchToken(std::string_view token) {
+    inline std::optional<TokenType> tryMatchToken(std::string_view token) {
         if (tokenMap.contains(token))
             return tokenMap.at(token);
 
-        return std::unexpected(false);
+        return std::nullopt;
     }
 }
