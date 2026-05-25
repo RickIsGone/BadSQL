@@ -4,6 +4,7 @@
 #include <iostream>
 #include <syncstream>
 #include <atomic>
+#include <chrono>
 
 namespace BadSQL {
    namespace Colors {
@@ -30,23 +31,29 @@ namespace BadSQL {
       static void _log(LogLevel lvl, std::string_view fmt, Args&&... args) {
          if (_logLevel == LogLevel::None)
             return;
+         auto now = std::chrono::system_clock::now();
+         auto in_time_t = std::chrono::system_clock::to_time_t(now);
+         auto tm = *std::localtime(&in_time_t);
 
+         double milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count() % 1000;
+         std::ostringstream timestamp;
+         timestamp << std::put_time(&tm, "%Y-%m-%d %H:%M:%S.") << std::setfill('0') << std::setw(2) << milliseconds;
          switch (lvl) {
             case LogLevel::Errors:
                if (lvl <= _logLevel)
-                  std::osyncstream(std::cerr) << Colors::Red << "[ERROR]: " << Colors::Reset << std::vformat(fmt, std::make_format_args(args...)) << std::endl;
+                  std::osyncstream(std::cerr) << Colors::Red << "[" << timestamp.str() << "] [ERROR]: " << Colors::Reset << std::vformat(fmt, std::make_format_args(args...)) << std::endl;
                break;
             case LogLevel::Warnings:
                if (lvl <= _logLevel)
-                  std::osyncstream(std::cerr) << Colors::Yellow << "[WARNING]: " << Colors::Reset << std::vformat(fmt, std::make_format_args(args...)) << std::endl;
+                  std::osyncstream(std::cerr) << Colors::Yellow << "[" << timestamp.str() << "] [WARNING]: " << Colors::Reset << std::vformat(fmt, std::make_format_args(args...)) << std::endl;
                break;
             case LogLevel::Info:
                if (lvl <= _logLevel)
-                  std::osyncstream(std::cout) << Colors::Green << "[INFO]: " << Colors::Reset << std::vformat(fmt, std::make_format_args(args...)) << std::endl;
+                  std::osyncstream(std::cout) << Colors::Green << "[" << timestamp.str() << "] [INFO]: " << Colors::Reset << std::vformat(fmt, std::make_format_args(args...)) << std::endl;
                break;
             case LogLevel::Debug:
                if (lvl <= _logLevel)
-                  std::osyncstream(std::cout) << Colors::Blue << "[DEBUG]: " << Colors::Reset << std::vformat(fmt, std::make_format_args(args...)) << std::endl;
+                  std::osyncstream(std::cout) << Colors::Blue << "[" << timestamp.str() << "] [DEBUG]: " << Colors::Reset << std::vformat(fmt, std::make_format_args(args...)) << std::endl;
                break;
             default:
                break;
