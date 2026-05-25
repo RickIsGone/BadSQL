@@ -22,7 +22,7 @@ namespace BadSQL {
         [[nodiscard]] std::optional<char> _peekBack(const size_t offset = 0) const;
         void _consume(size_t amount = 1);
 
-        size_t _index{};
+        size_t _index{0};
         std::string_view _query;
     };
 } // namespace BadSQL

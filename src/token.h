@@ -35,8 +35,8 @@ namespace BadSQL {
 
         I32,
         U32,
-        Float,
-        Double,
+        F32,
+        F64,
         Varchar,
         Char
     };
@@ -70,8 +70,8 @@ namespace BadSQL {
 
         {"i32", TokenType::I32},
         {"u32", TokenType::U32},
-        {"float", TokenType::Float},
-        {"double", TokenType::Double},
+        {"f32", TokenType::F32},
+        {"f64", TokenType::F64},
         {"varchar", TokenType::Varchar},
         {"char", TokenType::Char}
     };

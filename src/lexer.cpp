@@ -12,10 +12,10 @@
 namespace BadSQL {
     std::expected<std::vector<Token>, std::string> Lexer::tokenize() {
         std::vector<Token> tokens;
-
-        while (std::optional<char> peek =_peek() && peek.has_value()) {
-            std::cout << peek.value();
+        std::optional<char> peek = _peek();
+        while (peek.has_value()) {
             _consume();
+            peek = _peek();
         }
         return std::move(tokens);
     }

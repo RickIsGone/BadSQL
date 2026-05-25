@@ -9,3 +9,6 @@ s.connect((HOST, PORT))
 with open("test.badsql", "r") as f:
     data = f.read()
     s.sendall(data.encode())
+
+response = s.recv(1024).decode()
+print(response)

@@ -2,6 +2,8 @@
 
 #include <format>
 #include <iostream>
+#include <syncstream>
+#include <atomic>
 
 namespace BadSQL {
 namespace Colors {
@@ -21,7 +23,7 @@ namespace Logger {
         Info,
         Debug
     };
-    static LogLevel _logLevel = LogLevel::Errors;
+    inline std::atomic<LogLevel> _logLevel = LogLevel::Errors;
     inline void setLogLevel(LogLevel lvl) { _logLevel = lvl; }
 
     template <typename... Args>
@@ -32,19 +34,19 @@ namespace Logger {
         switch (lvl) {
             case LogLevel::Errors:
                 if (lvl <= _logLevel)
-                    std::cerr << Colors::Red << "[ERROR]: " << Colors::Reset << std::vformat(fmt, std::make_format_args(args...)) << std::endl;
+                    std::osyncstream(std::cerr) << Colors::Red << "[ERROR]: " << Colors::Reset << std::vformat(fmt, std::make_format_args(args...)) << std::endl;
                 break;
             case LogLevel::Warnings:
                 if (lvl <= _logLevel)
-                    std::cerr << Colors::Yellow << "[WARNING]: " << Colors::Reset << std::vformat(fmt, std::make_format_args(args...)) << std::endl;
+                    std::osyncstream(std::cerr) << Colors::Yellow << "[WARNING]: " << Colors::Reset << std::vformat(fmt, std::make_format_args(args...)) << std::endl;
                 break;
             case LogLevel::Info:
                 if (lvl <= _logLevel)
-                    std::cout << Colors::Green << "[INFO]: " << Colors::Reset << std::vformat(fmt, std::make_format_args(args...)) << std::endl;
+                    std::osyncstream(std::cout) << Colors::Green << "[INFO]: " << Colors::Reset << std::vformat(fmt, std::make_format_args(args...)) << std::endl;
                 break;
             case LogLevel::Debug:
                 if (lvl <= _logLevel)
-                    std::cout << Colors::Blue << "[DEBUG]: " << Colors::Reset << std::vformat(fmt, std::make_format_args(args...)) << std::endl;
+                    std::osyncstream(std::cout) << Colors::Blue << "[DEBUG]: " << Colors::Reset << std::vformat(fmt, std::make_format_args(args...)) << std::endl;
                 break;
             default:
                 break;
