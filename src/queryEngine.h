@@ -3,5 +3,5 @@
 using boost::asio::ip::tcp;
 
 namespace BadSQL {
-    void handleQuery(tcp::socket socket);
+   void handleQuery(tcp::socket socket);
 }

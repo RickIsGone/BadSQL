@@ -7,23 +7,24 @@
 #include "token.h"
 
 namespace BadSQL {
-    class Lexer {
-    public:
-        Lexer(std::string_view query) : _query(query) {}
-        ~Lexer() = default;
-        Lexer(const Lexer&) = delete;
-        Lexer& operator=(const Lexer&) = delete;
-        Lexer(Lexer&&) = delete;
+   class Lexer {
+   public:
+      Lexer(std::string_view query) : _query(query) {}
+      ~Lexer() = default;
+      Lexer(const Lexer&) = delete;
+      Lexer& operator=(const Lexer&) = delete;
+      Lexer(Lexer&&) = delete;
 
-        [[nodiscard]] std::expected<std::vector<Token>, std::string> tokenize();
+      [[nodiscard]] std::expected<std::vector<Token>, std::string> tokenize();
 
-    private:
-        [[nodiscard]] std::optional<char> _peek(const size_t offset = 0) const;
-        [[nodiscard]] std::optional<char> _peekBack(const size_t offset = 0) const;
-        void _consume(size_t amount = 1);
+   private:
+      [[nodiscard]] std::optional<char> _peek(const size_t offset = 0) const;
+      [[nodiscard]] std::optional<char> _peekBack(const size_t offset = 0) const;
+      [[nodiscard]] std::optional<TokenType> _determineFixedSizeTokenType(std::string_view token) const;
+      [[nodiscard]] Position _position(const size_t index) const;
+      void _consume(size_t amount = 1);
 
-        size_t _index{0};
-        std::string_view _query;
-    };
+      size_t _index{0};
+      std::string_view _query;
+   };
 } // namespace BadSQL
-

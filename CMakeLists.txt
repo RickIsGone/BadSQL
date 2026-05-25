@@ -4,6 +4,10 @@ project(BadSQL VERSION 0.1.0 LANGUAGES CXX)
 
 find_package(Boost REQUIRED)
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    add_compile_definitions(_WIN32_WINNT=0x0601)
+endif()
+
 file(GLOB SOURCES "src/*.cpp")
 add_executable(BadSQL ${SOURCES})
 

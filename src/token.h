@@ -5,81 +5,91 @@
 #include <optional>
 
 namespace BadSQL {
-    enum class TokenType {
-        Create,
-        Drop,
-        Delete,
-        Insert,
-        Update,
+   enum class TokenType {
+      Invalid,
 
-        Database,
-        Table,
+      Create,
+      Drop,
+      Delete,
+      Insert,
+      Update,
 
-        Use,
+      Database,
+      Table,
 
-        From,
-        Where,
-        Into,
-        Values,
-        All, // *
+      Use,
 
-        Identifier,
-        Number,
-        String,
+      From,
+      Where,
+      Into,
+      Values,
+      All, // *
 
-        OpenParen,
-        CloseParen,
+      Identifier,
+      IntLiteral,
+      FloatLiteral,
+      String,
 
-        Comma,
-        SemiColon,
+      OpenParen,
+      CloseParen,
 
-        I32,
-        U32,
-        F32,
-        F64,
-        Varchar,
-        Char
-    };
+      Comma,
+      SemiColon,
 
-    struct Position {
-        size_t line;
-        size_t column;
-    };
+      I32,
+      U32,
+      F32,
+      F64,
+      Varchar,
+      Char,
 
-    struct Token {
-        TokenType type;
-        Position position;
-    };
+      Greater,
+      GreaterEqual,
+      Less,
+      LessEqual,
+      Equal,
+      NotEqual
+   };
 
-    static std::unordered_map<std::string_view, TokenType> tokenMap = {
-        {"CREATE", TokenType::Create},
-        {"DROP", TokenType::Drop},
-        {"DELETE", TokenType::Delete},
-        {"INSERT", TokenType::Insert},
-        {"UPDATE", TokenType::Update},
+   struct Position {
+      size_t line;
+      size_t column;
+   };
 
-        {"DATABASE", TokenType::Database},
-        {"TABLE", TokenType::Table},
+   struct Token {
+      TokenType type;
+      Position position;
+      std::string lexeme;
+   };
 
-        {"USE", TokenType::Use},
+   static std::unordered_map<std::string_view, TokenType> tokenMap = {
+       {"CREATE", TokenType::Create},
+       {"DROP", TokenType::Drop},
+       {"DELETE", TokenType::Delete},
+       {"INSERT", TokenType::Insert},
+       {"UPDATE", TokenType::Update},
 
-        {"FROM", TokenType::From},
-        {"WHERE", TokenType::Where},
-        {"INTO", TokenType::Into},
-        {"VALUES", TokenType::Values},
+       {"DATABASE", TokenType::Database},
+       {"TABLE", TokenType::Table},
 
-        {"i32", TokenType::I32},
-        {"u32", TokenType::U32},
-        {"f32", TokenType::F32},
-        {"f64", TokenType::F64},
-        {"varchar", TokenType::Varchar},
-        {"char", TokenType::Char}
-    };
+       {"USE", TokenType::Use},
 
-    inline std::optional<TokenType> tryMatchToken(std::string_view token) {
-        if (tokenMap.contains(token))
-            return tokenMap.at(token);
+       {"FROM", TokenType::From},
+       {"WHERE", TokenType::Where},
+       {"INTO", TokenType::Into},
+       {"VALUES", TokenType::Values},
 
-        return std::nullopt;
-    }
-}
+       {"i32", TokenType::I32},
+       {"u32", TokenType::U32},
+       {"f32", TokenType::F32},
+       {"f64", TokenType::F64},
+       {"varchar", TokenType::Varchar},
+       {"char", TokenType::Char}};
+
+   inline std::optional<TokenType> tryMatchToken(std::string_view token) {
+      if (tokenMap.contains(token))
+         return tokenMap.at(token);
+
+      return std::nullopt;
+   }
+} // namespace BadSQL
