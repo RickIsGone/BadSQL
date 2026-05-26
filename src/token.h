@@ -14,6 +14,8 @@ namespace BadSQL {
       Insert,
       Update,
 
+      Select,
+
       Database,
       Table,
 
@@ -68,6 +70,8 @@ namespace BadSQL {
        {"DELETE", TokenType::Delete},
        {"INSERT", TokenType::Insert},
        {"UPDATE", TokenType::Update},
+
+       {"SELECT", TokenType::Select},
 
        {"DATABASE", TokenType::Database},
        {"TABLE", TokenType::Table},
