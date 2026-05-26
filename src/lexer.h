@@ -9,7 +9,7 @@
 namespace BadSQL {
    class Lexer {
    public:
-      Lexer(std::string_view query) : _query(query) {}
+      explicit Lexer(std::string_view query) : _query(query) {}
       ~Lexer() = default;
       Lexer(const Lexer&) = delete;
       Lexer& operator=(const Lexer&) = delete;

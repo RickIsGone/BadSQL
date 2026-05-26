@@ -1,13 +1,16 @@
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/write.hpp>
 #include <array>
+#include <chrono>
 #include "queryEngine.h"
 #include "lexer.h"
 #include "logger.h"
+#include "parser.h"
 using boost::asio::ip::tcp;
 
 namespace BadSQL {
    void handleQuery(tcp::socket socket) {
+      auto time = std::chrono::high_resolution_clock::now();
       std::string clientInfo = "<unknown>";
       try {
          try {
@@ -20,11 +23,19 @@ namespace BadSQL {
          std::string result = "OK";
 
          Lexer lexer{query};
-         auto res = lexer.tokenize();
-         if (!res)
-            throw std::runtime_error{res.error()};
+         Logger::debug("Entering Lexing phase");
+         auto resLexing = lexer.tokenize();
+         if (!resLexing)
+            throw std::runtime_error{resLexing.error()};
 
-         auto tokens = std::move(res.value());
+         auto tokens = std::move(resLexing.value());
+
+         Parser parser{tokens};
+         Logger::debug("Entering Parsing phase");
+         auto resParsing = parser.parse();
+         if (!resParsing)
+            throw std::runtime_error{resParsing.error()};
+         auto expressions = std::move(resParsing.value());
 
          boost::asio::write(socket, boost::asio::buffer(result));
          Logger::info("{} -- {}", clientInfo, result);
@@ -35,6 +46,9 @@ namespace BadSQL {
             boost::asio::write(socket, boost::asio::buffer(std::string(e.what())));
          } catch (...) {}
       }
+      auto now = std::chrono::high_resolution_clock::now();
+      auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(now - time).count();
+      Logger::info("{} -- Query executed in {:.1f}ms", clientInfo, elapsed / 1000.f);
       socket.close();
    }
 } // namespace BadSQL
