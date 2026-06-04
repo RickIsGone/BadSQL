@@ -41,13 +41,11 @@ int main() {
                      BadSQL::Logger::error("Connection handler exception: {}", e.what());
                   }
                });
-            } else if (ec != boost::asio::error::operation_aborted) {
+            } else if (ec != boost::asio::error::operation_aborted)
                BadSQL::Logger::error("Async accept error: {}", ec.message());
-            }
 
-            if (!io.stopped()) {
+            if (!io.stopped())
                accept();
-            }
          });
       };
 

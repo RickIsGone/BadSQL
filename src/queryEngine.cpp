@@ -17,6 +17,7 @@ namespace BadSQL {
             auto ep = socket.remote_endpoint();
             clientInfo = ep.address().to_string() + ":" + std::to_string(ep.port());
          } catch (...) {}
+
          std::array<char, 8192> buffer{};
          size_t bytes = socket.read_some(boost::asio::buffer(buffer));
          std::string query(buffer.data(), bytes);
@@ -35,6 +36,7 @@ namespace BadSQL {
          auto resParsing = parser.parse();
          if (!resParsing)
             throw std::runtime_error{resParsing.error()};
+
          auto expressions = std::move(resParsing.value());
 
          boost::asio::write(socket, boost::asio::buffer(result));

@@ -11,6 +11,7 @@ namespace BadSQL {
    enum class ASTType {
       Create,
       Drop,
+
       Delete,
       Insert,
       Update,
@@ -82,6 +83,7 @@ namespace BadSQL {
 
       const std::unique_ptr<Expression>& dbName() const { return _dbName; }
       std::unique_ptr<Expression>& dbName() { return _dbName; }
+
    private:
       std::unique_ptr<Expression> _dbName;
    };
