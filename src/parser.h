@@ -21,15 +21,15 @@ namespace BadSQL {
       [[nodiscard]] std::expected<std::vector<std::unique_ptr<Expression>>, std::string> parse();
 
    private:
-      [[nodiscard]] std::expected<std::unique_ptr<Expression>, std::string> _parseDDLStatement() const;
-      [[nodiscard]] std::expected<std::unique_ptr<Expression>, std::string> _parseDMLStatement() const;
-      [[nodiscard]] std::expected<std::unique_ptr<Expression>, std::string> _parseSelectStatement() const;
-      [[nodiscard]] std::expected<std::unique_ptr<Expression>, std::string> _parseIdentifier() const;
-      [[nodiscard]] std::expected<std::unique_ptr<Expression>, std::string> _parseUseStatement() const;
-      [[nodiscard]] std::expected<std::unique_ptr<Expression>, std::string> _parseDatabaseStatement() const;
-      [[nodiscard]] std::expected<std::unique_ptr<Expression>, std::string> _parseTableStatement() const;
-      [[nodiscard]] std::expected<std::unique_ptr<Expression>, std::string> _parseTableColumn() const;
-      [[nodiscard]] std::expected<std::shared_ptr<Type>, std::string> _parseType() const;
+      [[nodiscard]] std::expected<std::unique_ptr<Expression>, std::string> _parseDDLStatement() ;
+      [[nodiscard]] std::expected<std::unique_ptr<Expression>, std::string> _parseDMLStatement() ;
+      [[nodiscard]] std::expected<std::unique_ptr<Expression>, std::string> _parseSelectStatement() ;
+      [[nodiscard]] std::expected<std::unique_ptr<Expression>, std::string> _parseIdentifier() ;
+      [[nodiscard]] std::expected<std::unique_ptr<Expression>, std::string> _parseUseStatement() ;
+      [[nodiscard]] std::expected<std::unique_ptr<Expression>, std::string> _parseDatabaseStatement() ;
+      [[nodiscard]] std::expected<std::unique_ptr<Expression>, std::string> _parseTableStatement() ;
+      [[nodiscard]] std::expected<std::unique_ptr<Expression>, std::string> _parseTableColumn() ;
+      [[nodiscard]] std::expected<std::shared_ptr<Type>, std::string> _parseType() ;
 
       [[nodiscard]] std::optional<Token> _peek(const size_t offset = 0) const;
       [[nodiscard]] std::optional<Token> _peekBack(const size_t offset = 0) const;

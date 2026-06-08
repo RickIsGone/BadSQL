@@ -56,6 +56,9 @@ namespace BadSQL {
    struct Position {
       size_t line;
       size_t column;
+      [[nodiscard]] std::string string() const {
+         return std::to_string(line) + ":" + std::to_string(column);
+      }
    };
 
    struct Token {
