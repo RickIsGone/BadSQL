@@ -4,6 +4,10 @@
   <img src="BadSQL logo.png" alt="BadSQL logo" width="300" />
 </p>
 
-<img src="https://hackatime.hackclub.com/api/v1/badge/U091U38C2CA/RickIsGone/BadSQL?color=blue" alt="code time"/>    
+<img src="https://hackatime.hackclub.com/api/v1/badge/U091U38C2CA/RickIsGone/BadSQL?color=blue" alt="code time"/>  
+
+| Windows                                                                                                                                                              | Ubuntu                                                                                                                                                            |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [![Windows build](https://github.com/RickIsGone/BadSQL/actions/workflows/Windows.yml/badge.svg)](https://github.com/RickIsGone/BadSQL/actions/workflows/Windows.yml) | [![Ubuntu build](https://github.com/RickIsGone/BadSQL/actions/workflows/Ubuntu.yml/badge.svg)](https://github.com/RickIsGone/BadSQL/actions/workflows/Ubuntu.yml) | 
 
 ## Introduction
