@@ -60,6 +60,6 @@ jobs:
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
         run: ctest --build-config ${{ matrix.build_type }}
 
-      - name: Package with CPack
-        working-directory: build
-        run: cpack
+      # - name: Package with CPack
+      #   working-directory: build
+      #   run: cpack
