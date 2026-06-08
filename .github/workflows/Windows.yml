@@ -1,0 +1,65 @@
+name: Windows build
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+      actions: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        build_type: [ Release ]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Set reusable strings
+        id: strings
+        shell: bash
+        run: |
+          echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
+      - name: Install vcpkg
+        shell: powershell
+        run: |
+          git clone https://github.com/microsoft/vcpkg
+          ./vcpkg/bootstrap-vcpkg.bat
+
+      - name: Add vcpkg to PATH
+        run: echo "${{ github.workspace }}\vcpkg" | Out-File -Append -FilePath $env:GITHUB_PATH
+
+      - name: Install boost asio with vcpkg
+        run: |
+          vcpkg install boost-asio:x64-windows-static
+
+      - name: Install Ninja and Clang
+        run: choco install ninja llvm
+
+      - name: Configure CMake
+        run: |
+          cmake -B build -S . `
+          -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}\vcpkg\scripts\buildsystems\vcpkg.cmake" `
+          -DVCPKG_TARGET_TRIPLET=x64-windows-static `
+          -DCMAKE_BUILD_TYPE=Release `
+          -DCMAKE_CXX_COMPILER="clang++" `
+          -DCMAKE_C_COMPILER="clang" `
+          -GNinja
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Test
+        working-directory: ${{ steps.strings.outputs.build-output-dir }}
+        run: ctest --build-config ${{ matrix.build_type }}
+
+      - name: Package with CPack
+        working-directory: build
+        run: cpack
