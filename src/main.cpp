@@ -6,12 +6,30 @@
 #include <functional>
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/signal_set.hpp>
-#include "logger.h"
-#include "queryEngine.h"
+#include "logger.hpp"
+#include "queryEngine.hpp"
+
+/** @file
+ * @brief Main entry point and TCP server initialization
+ * Sets up an async TCP server listening on port 5432,
+ * accepts client connections, and handles SQL queries.
+ */
+
 using boost::asio::ip::tcp;
 
+/** @def PORT
+ * @brief TCP port number where the BadSQL server listens
+ */
 constexpr unsigned short PORT = 5432;
 
+/** @brief Main function - starts the BadSQL server
+ *
+ * Initializes the Boost ASIO IO context, starts an async TCP acceptor,
+ * handles SIGINT/SIGTERM signals for graceful shutdown,
+ * and spawns threads to handle incoming connections.
+ *
+ * @return EXIT_SUCCESS on successful shutdown, EXIT_FAILURE on error
+ */
 int main() {
    BadSQL::Logger::setLogLevel(BadSQL::Logger::LogLevel::Debug);
 

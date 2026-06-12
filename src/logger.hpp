@@ -5,8 +5,14 @@
 #include <syncstream>
 #include <atomic>
 #include <chrono>
-
+/** @file
+ * @brief @ref Logger Namespace definitions and functions
+ * @details Contains the implementation of a simple thread-safe logger with support for different log levels
+ */
 namespace BadSQL {
+   /**
+    * @brief namespace for the ANSI color codes used in the logger
+    */
    namespace Colors {
       constexpr const char* Red = "\x1B[91m";
       constexpr const char* Green = "\x1B[92m";
@@ -16,7 +22,13 @@ namespace BadSQL {
       constexpr const char* Reset = "\x1B[0m";
    } // namespace Colors
 
+   /**
+    * @brief A simple thread-safe logger with support for different log levels and colored output
+    */
    namespace Logger {
+      /**
+       * @brief the various log levels for the logger
+       */
       enum class LogLevel {
          None,
          Errors,
@@ -24,9 +36,23 @@ namespace BadSQL {
          Info,
          Debug
       };
+
+      /**
+       * @brief the current log level of the logger
+       */
       inline std::atomic<LogLevel> _logLevel = LogLevel::Errors;
+      /**
+       * @brief function to set the current log level of the logger
+       * @param lvl the log level to set
+       */
       inline void setLogLevel(LogLevel lvl) { _logLevel = lvl; }
 
+      /**
+       * @brief the main logging function that handles the actual logging logic, including formatting, coloring, and timestamping
+       * @param lvl the loglevel
+       * @param fmt the format string for the log message
+       * @param args the arguments for the format string
+       */
       template <typename... Args>
       static void _log(LogLevel lvl, std::string_view fmt, Args&&... args) {
          if (_logLevel == LogLevel::None)
@@ -60,18 +86,38 @@ namespace BadSQL {
          }
       }
 
+      /**
+       * @brief the function to log errors
+       * @param fmt the error format string
+       * @param args the format string arguments
+       */
       template <typename... Args>
       void error(std::string_view fmt, Args&&... args) {
          _log(LogLevel::Errors, fmt, std::forward<Args>(args)...);
       }
+      /**
+       * @brief the function to log warnings
+       * @param fmt the warning format string
+       * @param args the format string arguments
+       */
       template <typename... Args>
       void warn(std::string_view fmt, Args&&... args) {
          _log(LogLevel::Warnings, fmt, std::forward<Args>(args)...);
       }
+      /**
+       * @brief the function to log infos
+       * @param fmt the info format string
+       * @param args the format string arguments
+       */
       template <typename... Args>
       void info(std::string_view fmt, Args&&... args) {
          _log(LogLevel::Info, fmt, std::forward<Args>(args)...);
       }
+      /**
+       * @brief the function to log debug messages
+       * @param fmt the debug message format string
+       * @param args the format string arguments
+       */
       template <typename... Args>
       void debug(std::string_view fmt, Args&&... args) {
          _log(LogLevel::Debug, fmt, std::forward<Args>(args)...);

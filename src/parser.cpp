@@ -1,6 +1,13 @@
-#include "parser.h"
+#include "parser.hpp"
 
 namespace BadSQL {
+   /** @brief Parse tokenized input into an Abstract Syntax Tree
+    *
+    * Main parsing function that processes tokens and builds AST nodes.
+    * Delegates to specific parsing functions based on token type.
+    *
+    * @return Expected containing vector of Expression unique_ptrs, or error message
+    */
    std::expected<std::vector<std::unique_ptr<Expression>>, std::string> Parser::parse() {
       std::vector<std::unique_ptr<Expression>> expressions;
       while (_peek().has_value()) {
@@ -54,6 +61,12 @@ namespace BadSQL {
       return std::move(expressions);
    }
 
+   /** @brief Parse a DDL (CREATE/DROP) statement
+    *
+    * Expects either CREATE or DROP keyword, followed by TABLE or DATABASE.
+    *
+    * @return Expected containing a DDLStatement, or error message
+    */
    std::expected<std::unique_ptr<Expression>, std::string> Parser::_parseDDLStatement() {
       Token tok = _peek().value();
       ASTType type = tok.type == TokenType::Create ? ASTType::Create : ASTType::Drop;
@@ -72,6 +85,12 @@ namespace BadSQL {
       return std::make_unique<DDLStatement>(tok, type, std::move(exprRes.value()));
    }
 
+   /** @brief Parse a DATABASE node
+    *
+    * Parses database name following CREATE/DROP DATABASE.
+    *
+    * @return Expected containing a Database expression, or error message
+    */
    std::expected<std::unique_ptr<Expression>, std::string> Parser::_parseDatabaseStatement() {
       Token tok = _peek().value();
       _consume();
@@ -86,13 +105,66 @@ namespace BadSQL {
       return std::make_unique<Database>(tok, std::move(idRes.value()));
    }
 
+   /** @brief Parse a DML (INSERT/UPDATE/DELETE) statement
+    *
+    * Delegates to specific DML parsing logic.
+    * Currently returns nullptr (not yet implemented).
+    *
+    * @return Expected containing a DMLStatement, or error message
+    */
    std::expected<std::unique_ptr<Expression>, std::string> Parser::_parseDMLStatement() { return nullptr; }
+
+   /** @brief Parse a SELECT statement
+    *
+    * Handles SELECT queries with optional WHERE clauses.
+    * Currently returns nullptr (not yet implemented).
+    *
+    * @return Expected containing a Select expression, or error message
+    */
    std::expected<std::unique_ptr<Expression>, std::string> Parser::_parseSelectStatement() { return nullptr; }
+
+   /** @brief Parse a USE statement
+    *
+    * Selects which database to use.
+    * Currently returns nullptr (not yet implemented).
+    *
+    * @return Expected containing a Use expression, or error message
+    */
    std::expected<std::unique_ptr<Expression>, std::string> Parser::_parseUseStatement() { return nullptr; }
+
+   /** @brief Parse a TABLE node
+    *
+    * Parses table name and columns following CREATE/DROP TABLE.
+    * Currently returns nullptr (not yet implemented).
+    *
+    * @return Expected containing a Table expression, or error message
+    */
    std::expected<std::unique_ptr<Expression>, std::string> Parser::_parseTableStatement() { return nullptr; }
+
+   /** @brief Parse a table column definition
+    *
+    * Parses column name and type.
+    * Currently returns nullptr (not yet implemented).
+    *
+    * @return Expected containing a Column, or error message
+    */
    std::expected<std::unique_ptr<Expression>, std::string> Parser::_parseTableColumn() { return nullptr; }
+
+   /** @brief Parse a SQL data type
+    *
+    * Recognizes I32, U32, F32, F64, VARCHAR, CHAR types.
+    * Currently returns nullptr (not yet implemented).
+    *
+    * @return Expected containing a Type shared_ptr, or error message
+    */
    std::expected<std::shared_ptr<Type>, std::string> Parser::_parseType() { return nullptr; }
 
+   /** @brief Parse an identifier
+    *
+    * Matches a token of type Identifier and creates an Identifier AST node.
+    *
+    * @return Expected containing an Identifier, or error message if token is not an identifier
+    */
    std::expected<std::unique_ptr<Expression>, std::string> Parser::_parseIdentifier() {
       Token tok = _peek().value();
       if (tok.type != TokenType::Identifier)
@@ -101,6 +173,11 @@ namespace BadSQL {
       return std::make_unique<Identifier>(tok);
    }
 
+   /** @brief Peek at a token without consuming it
+    *
+    * @param offset Offset from current position (default 0 = current token)
+    * @return Optional containing the token, or nullopt if at end
+    */
    std::optional<Token> Parser::_peek(const size_t offset) const {
       if (_tokens.empty())
          return std::nullopt;
@@ -108,13 +185,24 @@ namespace BadSQL {
          return _tokens.at(_index + offset);
       return std::nullopt;
    }
+
+   /** @brief Peek at a previous token
+    *
+    * @param offset Offset backwards from current position
+    * @return Optional containing the token, or nullopt if before start
+    */
    std::optional<Token> Parser::_peekBack(const size_t offset) const {
       if (_tokens.empty())
          return std::nullopt;
       if (_index < offset + 1)
          return std::nullopt;
-      return _tokens.at(_index - offset - 1);
+      return std::nullopt;
    }
+
+   /** @brief Consume tokens from the current position
+    *
+    * @param amount Number of tokens to consume (default 1)
+    */
    void Parser::_consume(size_t amount) {
       _index += amount;
    }

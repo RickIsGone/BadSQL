@@ -2,11 +2,11 @@
 #include <vector>
 #include <string>
 #include <string_view>
-#include "lexer.h"
+#include "lexer.hpp"
 
 #include <ostream>
 
-#include "token.h"
+#include "token.hpp"
 
 namespace BadSQL {
    std::expected<std::vector<Token>, std::string> Lexer::tokenize() {
