@@ -41,6 +41,9 @@ jobs:
       - name: Checkout m.css
         run: git clone --depth 1 https://github.com/mosra/m.css.git
 
+      - name: install m.css Python dependencies
+        run: pip install pygments pyyaml jinja2 markupsafe
+
       - name: Generate docs with m.css
         run: python m.css/documentation/doxygen.py conf.py
 
