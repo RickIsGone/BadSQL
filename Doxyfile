@@ -3,7 +3,8 @@
 PROJECT_NAME           = "BadSQL"
 PROJECT_NUMBER         = "1.0.0"
 PROJECT_BRIEF          = "A lightweight SQL database engine with lexer, parser, and query execution"
-PROJECT_LOGO           =
+PROJECT_LOGO           = "docs/media/BadSQL logo.png"
+PROJECT_MARGIN         = 20px
 
 # Output
 OUTPUT_DIRECTORY       = docs
