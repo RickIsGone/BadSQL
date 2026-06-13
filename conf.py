@@ -1,4 +1,5 @@
 DOXYFILE = 'Doxyfile-mcss'
+LOGO = 'docs/media/logo.png'
 
 LINKS_NAVBAR1 = [
     ("Pages", 'pages', []),
