@@ -1,5 +1,6 @@
 DOXYFILE = 'Doxyfile-mcss'
 LOGO = 'docs/media/logo.png'
+SHOW_UNDOCUMENTED = True
 
 LINKS_NAVBAR1 = [
     ("Pages", 'pages', []),
