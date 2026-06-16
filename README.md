@@ -4,9 +4,7 @@
 
 <div align="center">
 
-![code time](https://hackatime.hackclub.com/api/v1/badge/U091U38C2CA/RickIsGone/BadSQL?color=blue)
-![GitHub License](https://img.shields.io/github/license/rickisgone/badsql?color=blue)
-
+![code time](https://hackatime.hackclub.com/api/v1/badge/U091U38C2CA/RickIsGone/BadSQL?color=blue) ![Static Badge](https://img.shields.io/badge/license-Apache%202.0-blue)
 
 </div>
 
