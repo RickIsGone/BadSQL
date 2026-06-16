@@ -3,7 +3,8 @@ AccessModifierOffset: '-3'
 AlignAfterOpenBracket: Align
 AlignConsecutiveMacros: 'true'
 AlignOperands: 'false'
-AlignTrailingComments: 'false'
+AlignTrailingComments:
+  OverEmptyLines: 1
 AllowAllArgumentsOnNextLine: 'false'
 AllowShortBlocksOnASingleLine: 'true'
 AllowShortFunctionsOnASingleLine: All

@@ -75,7 +75,7 @@ namespace BadSQL {
        */
       void _consume(size_t amount = 1);
 
-      size_t _index{0};              ///< Current position in the query
-      std::string_view _query;       ///< The SQL query being tokenized
+      size_t _index{0};        ///< Current position in the query
+      std::string_view _query; ///< The SQL query being tokenized
    };
 } // namespace BadSQL

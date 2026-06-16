@@ -15,33 +15,33 @@ namespace BadSQL {
     * Includes keywords, operators, literals, and special characters.
     */
    enum class TokenType {
-      Invalid,      ///< Invalid or unknown token
+      Invalid, ///< Invalid or unknown token
 
       // DDL keywords
-      Create,       ///< CREATE keyword
-      Drop,         ///< DROP keyword
+      Create, ///< CREATE keyword
+      Drop,   ///< DROP keyword
 
       // DML keywords
-      Delete,       ///< DELETE keyword
-      Insert,       ///< INSERT keyword
-      Update,       ///< UPDATE keyword
+      Delete, ///< DELETE keyword
+      Insert, ///< INSERT keyword
+      Update, ///< UPDATE keyword
 
       // Query keywords
-      Select,       ///< SELECT keyword
+      Select, ///< SELECT keyword
 
       // Object types
-      Database,     ///< DATABASE keyword
-      Table,        ///< TABLE keyword
+      Database, ///< DATABASE keyword
+      Table,    ///< TABLE keyword
 
       // Statement keywords
-      Use,          ///< USE keyword
+      Use, ///< USE keyword
 
       // Clauses
-      From,         ///< FROM keyword
-      Where,        ///< WHERE keyword
-      Into,         ///< INTO keyword
-      Values,       ///< VALUES keyword
-      All,          ///< * (all columns)
+      From,   ///< FROM keyword
+      Where,  ///< WHERE keyword
+      Into,   ///< INTO keyword
+      Values, ///< VALUES keyword
+      All,    ///< * (all columns)
 
       // Literals and identifiers
       Identifier,   ///< User-defined identifier
@@ -50,19 +50,19 @@ namespace BadSQL {
       String,       ///< String literal (e.g., 'hello')
 
       // Delimiters
-      OpenParen,    ///< ( (opening parenthesis)
-      CloseParen,   ///< ) (closing parenthesis)
+      OpenParen,  ///< ( (opening parenthesis)
+      CloseParen, ///< ) (closing parenthesis)
 
-      Comma,        ///< , (comma)
-      SemiColon,    ///< ; (semicolon)
+      Comma,      ///< , (comma)
+      SemiColon,  ///< ; (semicolon)
 
       // Data types
-      I32,          ///< i32 type
-      U32,          ///< u32 type
-      F32,          ///< f32 type
-      F64,          ///< f64 type
-      Varchar,      ///< varchar type
-      Char,         ///< char type
+      I32,     ///< i32 type
+      U32,     ///< u32 type
+      F32,     ///< f32 type
+      F64,     ///< f64 type
+      Varchar, ///< varchar type
+      Char,    ///< char type
 
       // Operators
       Greater,      ///< > (greater than)
@@ -78,8 +78,8 @@ namespace BadSQL {
     * Stores line and column information for error reporting.
     */
    struct Position {
-      size_t line;      ///< Line number (1-based)
-      size_t column;    ///< Column number (1-based)
+      size_t line;   ///< Line number (1-based)
+      size_t column; ///< Column number (1-based)
 
       /** @brief Convert position to string representation
        * @return String in format "line:column"
@@ -94,9 +94,9 @@ namespace BadSQL {
     * Contains the token type, position in source, and the lexeme.
     */
    struct Token {
-      TokenType type;      ///< The type of the token
-      Position position;   ///< The position in the source query
-      std::string lexeme;  ///< The actual text of the token
+      TokenType type;     ///< The type of the token
+      Position position;  ///< The position in the source query
+      std::string lexeme; ///< The actual text of the token
    };
 
    /** @brief Map of keyword strings to token types
